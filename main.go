@@ -1,6 +1,7 @@
 package main
 
 import (
+	"database/sql"
 	"fmt"
 	"net/http"
 
@@ -8,9 +9,23 @@ import (
 	"github.com/raphaelmb/go-web-dev/controllers"
 	"github.com/raphaelmb/go-web-dev/templates"
 	"github.com/raphaelmb/go-web-dev/views"
+
+	_ "github.com/jackc/pgx/v4/stdlib"
 )
 
 func main() {
+	db, err := sql.Open("pgx", "host=localhost port=5432 user=user password=password dbname=gallery sslmode=disable")
+	if err != nil {
+		panic(err)
+	}
+	defer db.Close()
+
+	err = db.Ping()
+	if err != nil {
+		panic(err)
+	}
+
+	fmt.Println("Connected!")
 	r := chi.NewRouter()
 
 	r.Get("/", controllers.StaticHandlder(views.Must(views.ParseFS(templates.FS, "home.gohtml", "tailwind.gohtml"))))
@@ -27,7 +42,7 @@ func main() {
 	r.NotFound(func(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Page not found", http.StatusNotFound)
 	})
-	
+
 	fmt.Println("Starting server on port 3000.")
 	http.ListenAndServe(":3000", r)
 }

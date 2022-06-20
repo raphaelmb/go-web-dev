@@ -11,26 +11,26 @@ func StaticHandlder(tpl Template) http.HandlerFunc {
 	}
 }
 
-func FAQ (tpl Template) http.HandlerFunc {
-	questions := []struct{
+func FAQ(tpl Template) http.HandlerFunc {
+	questions := []struct {
 		Question string
-		Answer template.HTML
+		Answer   template.HTML
 	}{
 		{
 			Question: "Is there a free version?",
-			Answer: "Yes.",
+			Answer:   "Yes.",
 		},
 		{
 			Question: "What are your support hours?",
-			Answer: "24/7.",
+			Answer:   "24/7.",
 		},
 		{
 			Question: "How do I contact support?",
-			Answer: `Via email - <a href="mailto:email@email.com">support@email.com</a>`,
+			Answer:   `Via email - <a href="mailto:email@email.com">support@email.com</a>`,
 		},
 		{
 			Question: "Where is your office located?",
-			Answer: "Our entire team is remote.",
+			Answer:   "Our entire team is remote.",
 		},
 	}
 	return func(w http.ResponseWriter, r *http.Request) {
